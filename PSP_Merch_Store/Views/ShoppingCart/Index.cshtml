@@ -1,0 +1,111 @@
+﻿@model IEnumerable <PSP_Merch_Store.Models.CartItem>
+@{
+    ViewBag.Title = "Index";
+    var i = 1;
+}
+
+<h2>Шопинг Кошничка</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Број на продукт
+        </th>
+        <th>
+            Име на производот
+        </th>
+        <th>
+            Слика
+        </th>
+        <th>
+            Цена
+        </th>
+        <th>
+            Количина
+        </th>
+        <th>
+            Конечна Цена
+        </th>
+        <th>
+            Избриши продукт
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.NameOfProduct)
+            </td>
+            <td>
+                <img src="@item.Product.ImagePath" width="210" height="240"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Price) ден.
+            </td>
+            <td>
+                <a href="/ShoppingCart/RemoveItemQuantity?ProductsId=@item.ProductId">
+                    <img src="~/UploadedFiles/remove_icon.png" width="16" height="16" />
+                </a>
+                @Html.DisplayFor(modelItem => item.Quantity)
+                <a href="/ShoppingCart/AddItemQuantity?ProductsId=@item.ProductId">
+                    <img src="~/UploadedFiles/add_icon.png" width="20" height="20" />
+                </a>
+            </td>
+            <td>
+                @(item.Product.Price * item.Quantity) ден.
+            </td>
+            <td>
+                <a href="/ShoppingCart/RemoveItemFromCart?ProductsId=@item.ProductId" class="btn btn-md btn-default">Избриши продукт</a>
+            </td>
+        </tr>
+        @(i+=1)
+    }
+
+</table>
+
+<div class="row">
+    <div class="col-md-6">
+        <p><b>Вкупна Цена: @ViewBag.Total ден.</b></p>
+    </div>
+</div>
+@if (i > 1)
+{
+<div class="row">
+    <div class="col-md-6">
+        <a href="#" id="purchase" class="btn btn-md btn-default">Нарачај</a>
+    </div>
+</div>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#purchase").click(function () {
+                bootbox.confirm({
+                    title: "Нарачај?",
+                    message: "Дали сте сигурни дека сакате да нарачате?",
+                    buttons: {
+                        confirm: {
+                            label: 'Да',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Не',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            window.location.href = "/ShoppingCart/Purchase";
+                        } else {
+
+                        }
+                    }});
+            });
+        });
+    </script>    
+}

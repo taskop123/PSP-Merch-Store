@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - PSP Merch Store</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Layout.css" rel="stylesheet" />
+    <link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-1 col-sm-1 col-xs-1">
+                <div class="logo">
+                    <a href="/"><img src="~/UploadedFiles/PSP_Merch_Shop_Logo.jpg" height="100" width="100" id="logoSlika" /></a>
+                   
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-7 col-xs-7">
+                <div class="logo" style="float:right;">
+                    <h1>
+                    <a href="/">PSP <span>Merchendise Store</span></a>
+                </h1>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="row account">
+                    <div class="col-md-13 hidden-xs">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-13" >
+                        <a href="/ShoppingCart/Index" style="float: right;">
+                            @using PSP_Merch_Store.Logic;
+                            @{
+                                using (ShoppingCartActions usersShoppingCart = new ShoppingCartActions())
+                                {
+                                    var itemsCount = usersShoppingCart.GetCount();
+                                    @itemsCount<img src="~/UploadedFiles/shopping_cart_icon.png" width="40" height="40" />
+                                }
+                            }
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border-top: 2px solid #333;">
+            <div class="col-md-7">
+                <div class="nav-menus" style="border-top:none">
+                    <ul class="nav nav-pills">
+                        <li style="border-radius:initial;"><a href="/Products/Index">Сите продукти</a></li>
+                        <li style="border-radius:initial;"><a href="/Products/Tshirts">Маици</a></li>
+                        <li style="border-radius:initial;"><a href="/Products/Pants">Пантолони</a></li>
+                        <li style="border-radius:initial;"><a href="/Products/Hats">Капи</a></li>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li style="border-radius:initial;"><a href="/Account/AddUserToRole">Додај корисник во некоја улога</a></li>
+                        }
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="nav-menus" style="border-top:none;float: right;">
+                    <ul class="nav nav-pills">
+                        <li style="border-radius:initial;"><a href="/">Почетна</a></li>
+                        <li style="border-radius:initial;"><a href="/Home/Contact">Контакт</a></li>
+                        <li style="border-radius:initial;"><a href="/Home/About">За нас</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - PSP Merchendise Shop - Емил Петровски, Никола Станојковски и Ташко Павлов</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

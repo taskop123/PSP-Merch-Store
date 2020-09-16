@@ -1,0 +1,132 @@
+﻿@model PSP_Merch_Store.Models.Products
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Детали за продуктот</h2>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <!--Slikata ovde!-->
+            <img src="@Model.ImagePath" alt="Alternate Text" style="max-width:350px;max-height:400px;" />
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--Ime na proizvodot-->
+                    <h4>Назив на производот: <b>@Model.NameOfProduct</b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--Тип-->
+                    <h4>Тип на производот: <b>@Model.ProductType</b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--Rating-->
+                    <h4 style="display: block; float: left;">Оцена: </h4><span class="stars" data-rating="@Model.Rating" data-num-stars="5" style="display:block;width:90px;margin-left:auto;margin-right:auto;float: left;margin-top: 13px;margin-left: 10px;"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--Cena-->
+                    <h4>Cena: <b>@Model.Price ден.</b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--Pol-->
+                    <h4>Пол: <b>@Model.Gender</b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--Boja-->
+                    <h4>Боја: <b>@Model.Color</b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--Velicina-->
+                    <h4>Величина: <b>@Model.Size</b></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--Proizveduvac-->
+                    <h4>Производител: <b>@Model.Manufacturer</b></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <a href="#" identityNumber="@Model.ProductsId" class="AddToCart" style="background-color:green;color:white;text-decoration:none;display:block;border-radius:10px;width:100px;margin-left:auto;margin-right:auto;">
+                Додај во кошничка
+                <img src="~/UploadedFiles/add_to_cart_icon.png" width="18" height="18" />
+            </a>
+        </div>
+        <div class="col-md-2">
+            <a href="/Products/Index" class="btn btn-md btn-default">Назад</a>
+        </div>
+    </div>
+    @*<div class="row">
+        @if (User.IsInRole("Administrator"))
+        {
+            <div class="col-md-2">
+                <a href="/Products/Edit/@Model.ProductsId" class="btn btn-md btn-default" style="margin-left:34px;margin-top:20px;">Промени</a>
+            </div>
+        }
+    </div>*@
+</div>
+
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.rating.js"></script>
+    <script>
+        $.fn.stars = function () {
+            return $(this).each(function () {
+                const rating = $(this).data("rating");
+                const numStars = $(this).data("numStars");
+                const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
+                const halfStar = (rating % 1 !== 0) ? '<i class="fas fa-star-half-alt"></i>' : '';
+                const noStar = '<i class="far fa-star"></i>'.repeat(Math.floor(numStars - rating));
+                $(this).html(`${fullStar}${halfStar}${noStar}`);
+            });
+        }
+        $(document).ready(function () {
+            $(function () {
+                $('.stars').stars();
+            });
+            $(".AddToCart").click(function () {
+                var id = $(this).attr("identityNumber");
+                bootbox.confirm({
+                    title: "Стави во кошничка?",
+                    message: "Дали сте сигурни дека сакате да го ставите овој продукт во кошничка?",
+                    buttons: {
+                        confirm: {
+                            label: 'Да',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Не',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            window.location.href = "/ShoppingCart/AddToCart?ProductsId=" + id;
+                        } else {
+
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
